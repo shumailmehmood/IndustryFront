@@ -1,0 +1,1 @@
+export const CREAT_QUIZ = "CREAT_QUIZ"
