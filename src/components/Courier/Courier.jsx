@@ -15,13 +15,17 @@ import { sendCourier, get_today_courier } from "../../api/api"
 import { SuccessfullToast, ErrorToast } from "../../misc/helper"
 import Datetime from "react-datetime";
 import Mini from "../MiniTableButton/MiniTableButton"
+import ReturnQuantity from "../Modals/ReturnQuantity";
 function CategoryRegisteration({ user, items, checkout }) {
     const [loading, setLoading] = useState(false)
     const [selectedUser, setSelectedUser] = useState(null)
     const [selectedItem, setSelectedItem] = useState(null)
     const [count, setCount] = useState(0)
     const [sendItems, setSendItems] = useState([])
-    const [retrn, setRetrn] = useState(false)
+    const [retrn, setRetrn] = useState(checkout)
+    const [open, setOpen] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
+    const [index, setIndex] = useState(null)
     const {
         register,
         handleSubmit,
@@ -30,21 +34,18 @@ function CategoryRegisteration({ user, items, checkout }) {
     useEffect(() => {
     }, [sendItems])
 
-
-    const onSubmit = (data) => {
-    };
     const get = (state) => {
         setLoading(true)
         if (selectedUser) {
             let newParams = {
                 from: state,
-                uid: selectedUser.uid.item
+                uid: selectedUser.uid ? selectedUser.uid.item : selectedUser.uid
             }
             get_today_courier(newParams).then(res => {
                 if (res.error) { } else {
-                    setSelectedUser({ uid: res.data.uid });
-                    setSendItems(res.data.sendItems)
-                    res.data.returnItems.length ? setRetrn(true) : setRetrn(false)
+                    setSelectedUser(res.data ? res.data.uid : null);
+                    setSendItems(res.data ? res.data.sendItems : null)
+                    res.data ? res.data.returnItems ? setRetrn(false) : setRetrn(true) : setRetrn(true)
                     setLoading(false)
                 }
             })
@@ -55,7 +56,6 @@ function CategoryRegisteration({ user, items, checkout }) {
 
     const sendCourierData = () => {
         setLoading(true);
-
         if (!checkout) {
             let data = {
                 uid: selectedUser.uid,
@@ -79,11 +79,22 @@ function CategoryRegisteration({ user, items, checkout }) {
         }
 
     }
-    let data = sendItems.length ?
-        sendItems.map(element => {
+    const handleReturn = (value) => {
+        let items = sendItems;
+        console.log(items)
+        items[index]['return_count'] = +items[index].count - +value;
+        setSelectedItem(items)
+    };
+
+    let data = sendItems ?
+        sendItems.map((element, i) => {
             return {
                 name: element.item_name,
-                qty: <Mini text={element.count} handleClick={() => { }} />
+                qty: <Mini text={element.count} handleClick={() => {
+                    setOpenModal(true)
+                    setIndex(i)
+                }} />,
+                rQty: element.return_count ? element.return_count : null
             }
         })
         : []
@@ -97,24 +108,29 @@ function CategoryRegisteration({ user, items, checkout }) {
             Header: "Quantity",
             accessor: "qty",
             sortable: false
+
+        }
+        ,
+        {
+            Header: "Return Qty",
+            accessor: "rQty",
+            sortable: false,
+            show: checkout
         }
     ]
     return (
         <div>
-
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <ReturnQuantity handleReturn={handleReturn} show={openModal} handleClose={() => setOpenModal(false)} />
+            <form>
                 <Row>
-
-
-
                     <Col md="6">
                         <ControlLabel><b>Item's Category</b></ControlLabel>
-
+                        {/* {console.log(selectedItem)} */}
                         <FormGroup>
                             <Select
                                 placeholder="Select User"
                                 onChange={(e) => setSelectedUser(e.value)}
-                                // value={value2}
+                                //  value={}
                                 options={user}
                             />
                         </FormGroup>
@@ -123,15 +139,15 @@ function CategoryRegisteration({ user, items, checkout }) {
                     {checkout ? <Col md="6">
                         <Card
                             content={<div>
-
-
                                 <Datetime
                                     inputProps={{ placeholder: "Datetime Picker Here" }}
                                     defaultValue={new Date()}
+                                    onFocus={() => setOpen(true)}
                                     onChange={(e) => {
+                                        setOpen(false)
                                         get(e.toISOString())
-                                        // setTime({ time: e.toISOString() })
                                     }}
+                                    open={open}
                                 />
                             </div>
                             } />
@@ -155,7 +171,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                             <input
                                 type="text"
                                 name={`count`}
-                                isDisabled={retrn}
+                                disabled={retrn}
                                 // ref={register({ required: true, validate: value => value !== "" })}
                                 onChange={(e) => setCount(e.target.value)}
                                 className={"form-control"}
@@ -164,7 +180,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                         </FormGroup>
                     </Col>
                     <Col md="4">
-                        <Button isDisabled={retrn} type="submit" className="btn-fill" onClick={() => {
+                        <Button disabled={retrn} type="submit" className="btn-fill" onClick={() => {
                             let item = selectedItem;
                             item['count'] = count;
                             let send = sendItems;
@@ -196,7 +212,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                     <Col md="1"></Col>
                 </Row>
                 <center>
-                    <Button isDisabled={retrn} type="button" className="btn-fill" onClick={() => sendCourierData()} >
+                    <Button disabled={retrn} type="button" className="btn-fill" onClick={() => sendCourierData()} >
                         {loading ? <div><span>Loading...</span><i className="fa fa-spin fa-spinner" /></div> : REG_BTN_NAME}
                     </Button>
                 </center>

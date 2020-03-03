@@ -3,24 +3,13 @@ import { Col, Row, Modal, FormGroup } from "react-bootstrap";
 import Card from '../Card/Card';
 import Button from "components/CustomButton/CustomButton";
 import { UPDATE_STOCK_BTN_NAME } from "../../misc/constants";
-import { updateStockDel } from "../../api/api"
-import { ErrorToast, SuccessfullToast } from "../../misc/helper"
+
 const EditQuiz = (prop) => {
     const [loading, setLoading] = useState(false)
     const [value, setValue] = useState(0)
-    onsubmit = () => {
-        setLoading(true)
-        let obj=prop.obj;
-        obj.stockIn=value;
-        updateStockDel(prop.obj).then(res => {
-            if (res.error) {
-                setLoading(false)
-                ErrorToast(res.error.response.data);
-            } else {
-                SuccessfullToast("Updated")
-                setLoading(false)
-            }
-        })
+    onsubmit = (data) => {
+        prop.handleReturn(value)
+        prop.handleClose()
     }
     return (
         <Modal show={prop.show} onHide={prop.handleClose} bsSize="lg">
@@ -40,7 +29,7 @@ const EditQuiz = (prop) => {
                                         <Col md="5">
                                             <FormGroup>
                                                 <input
-                                                
+
                                                     type="number"
                                                     placeholder="Enter Quantity"
                                                     className={"form-control"}
