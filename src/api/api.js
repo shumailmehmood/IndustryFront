@@ -1,6 +1,7 @@
 //help https://stackoverflow.com/questions/49500379/typical-file-structure-in-reactjs-application-grouping-api-calls-in-api-js
 import axios from 'axios';
 import resolve from './resolve';
+import { Body } from 'react-bootstrap/lib/Media';
 require('dotenv').config()
 
 // let apiBaseUrl = 'http://loca';
@@ -52,58 +53,20 @@ export const get_today_courier = async (params) => {
     return await resolve(axios.get(`${apiBaseUrl}/api/v1/get_today_courier/${params.uid}?from=${params.from}`)
         .then(res => res.data));
 }
-
-
-
-
-
-
-export const getAllCategories = async () => {
-    return await resolve(axios.get(`${apiBaseUrl}/api/v1/getAllCategories`)
-        .then(res => res.data));
-}
-export const getAllSellers = async () => {
-    return await resolve(axios.get(`${apiBaseUrl}/api/v1/getAllSellers`)
-        .then(res => res.data));
-}
-export const getAllCompanies = async () => {
-    return await resolve(axios.get(`${apiBaseUrl}/api/v1/getAllCompanies`)
+export const get_all_courier = async (params) => {
+    return await resolve(axios.get(`${apiBaseUrl}/api/v1/get_courier?from=${params.date}`)
         .then(res => res.data));
 }
 
-export const getStock = async (params) => {
-    return await resolve(axios.get(`${apiBaseUrl}/api/v1/getSearchItems?name=${params.name}&barcode=${params.barcode}&limit=${params.limit}&page=${params.page}`)
-        .then(res => res.data));
-}
-export const getDailySale = async (params) => {
-    // console.log("params",params)
-    return await resolve(axios.get(`${apiBaseUrl}/api/v1/getDailySale?name=${params.name}&from=${params.date}&orderNo=${params.orderNo}&barcode=${params.barcode}&limit=${params.limit}&page=${params.page}`)
-        .then(res => res.data));
-}
 
-export const getSale = async (barcode) => {
-    return await resolve(axios.get(`${apiBaseUrl}/api/v1/fetch?barcode=${barcode}`)
-        .then(res => res.data));
-}
-export const getOrderNo = async () => {
-    return await resolve(axios.get(`${apiBaseUrl}/api/v1/oNo`)
-        .then(res => res.data));
-}
+
 
 //--------------------------------PUT--------------------------//
-export const updateSeller = async (id, data) => {
-    return await resolve(axios.put(`${apiBaseUrl}/api/v1/updateSeller/${id}`, data)
-        .then(res => res.data));
-}
-export const updateStock = async (id, data) => {
-    return await resolve(axios.put(`${apiBaseUrl}/api/v1/updateStock/${id}`, data)
-        .then(res => res.data));
-}
-export const updateStockDel = async (params) => {
-    return await resolve(axios.put(`${apiBaseUrl}/api/v1/updateStockDel?barcode=${params.barcode}&stockIn=${params.stockIn}`)
-        .then(res => res.data));
-}
 
+export const courier_checkout = async (id, data) => {
+    return await resolve(axios.put(`${apiBaseUrl}/api/v1/checkout/${id}`, data)
+        .then(res => res.data));
+}
 
 
 

@@ -5,7 +5,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import Card from "../Card/Card"
 import MiniTableButton from "../MiniTableButton/MiniTableButton"
-import { getDailySale } from "../../api/api"
+import { get_all_courier } from "../../api/api"
 
 import Items from "../Modals/SearchBarCode";
 const Sale = (props) => {
@@ -16,8 +16,8 @@ const Sale = (props) => {
     const [itemsData, setItemsData] = useState([])
     const [loading, setLoading] = useState(false)
     const [id, setId] = useState('')
-    const[time,setTime]=useState({time:new Date().toISOString()});
-
+    const [time, setTime] = useState({ time: new Date().toISOString() });
+    const [courierItems, setCourierItems] = useState(null)
 
     useEffect(() => {
         get();
@@ -27,25 +27,25 @@ const Sale = (props) => {
     }, [time]);
     const get = (state) => {
         setLoading(true)
-
         let newParams = {
             page: state ? state.page + 1 : 1,
             limit: state ? state.pageSize : 10,
-            date:time.time,
-            name: '',
-            barcode: '',
-            orderNo: ''
+            date: time.time,
+            // name: '',
+            // barcode: '',
+            // orderNo: ''
         }
+        console.log(newParams)
         if (state) {
             state.filtered.forEach(element => {
                 newParams[element.id] = element.value
             })
         }
-        getDailySale(newParams).then(res => {
+        get_all_courier(newParams).then(res => {
             if (res.error) { } else {
                 setDataDB(res.data.data)
                 setMetaData(res.data.metadata[0])
-                console.log(res.data.data)
+                // console.log(res.data.data)
                 setLoading(false)
             }
         })
@@ -54,70 +54,47 @@ const Sale = (props) => {
     let data = dataDB.length ?
         dataDB.map((element, index) => {
             return {
-                orderNo: "OID-" + element.orderNo,
-                subTotal: element.subTotal,
-                Discount: element.Discount,
-                grandTotal: element.grandTotal,
-                amountPayed: element.amountPayed,
-                amountReturned: element.amountReturned,
-                view: <MiniTableButton text={"View Items"} handleClick={() => {
-                    setItemsData(element.items)
-                    setItems(true)
+                name: element.uid.name,
+                vNo: element.uid.vehical_no,
+                status: element.returnItems ? "Completed" : "Pending",
+                action: <MiniTableButton text={<i className="fa fa-eye" aria-hidden="true"></i>} handleClick={() => {
+                    setCourierItems(element.sendItems)
                 }} />
             }
-
         })
 
         : []
     const columns = [
         {
-            Header: "Order No",
-            accessor: "orderNo",
+            Header: "Name",
+            accessor: "name",
             sortable: false,
             filterable: true,
 
         },
 
         {
-            Header: "Sub Total",
-            accessor: "subTotal",
+            Header: "Vehicle No",
+            accessor: "vNo",
+            sortable: false,
+            filterable: true
+        },
+
+        {
+            Header: "Status",
+            accessor: "status",
+            sortable: false,
+            filterable: false
+        },
+        {
+            Header: "Action",
+            accessor: "action",
             sortable: false,
             filterable: false
         },
 
-        {
-            Header: "Discount",
-            accessor: "Discount",
-            sortable: false,
-            filterable: false
-        },
 
-        {
-            Header: "Grand Total",
-            accessor: "grandTotal",
-            sortable: false,
-            filterable: false
-        },
 
-        {
-            Header: "Amount Paid",
-            accessor: "amountPayed",
-            sortable: false,
-            filterable: false
-        },
-
-        {
-            Header: "Amount Returned",
-            accessor: "amountReturned",
-            sortable: false,
-            filterable: false
-        },
-        {
-            Header: "View Items",
-            accessor: "view",
-            sortable: false,
-            filterable: false
-        },
 
     ]
     return (<div>
@@ -125,18 +102,18 @@ const Sale = (props) => {
         <Row>
             <Col md="1"></Col>
             <Col md="10">
-            <Card
-                content={
-                <Datetime
-                    inputProps={{ placeholder: "Datetime Picker Here" }}
-                    defaultValue={new Date()}
-                    onChange={(e) =>{                        
-                    setTime({time:e.toISOString()})
-                        
-                    }}
-                />
-                }/>
-                </Col>
+                <Card
+                    content={
+                        <Datetime
+                            inputProps={{ placeholder: "Datetime Picker Here" }}
+                            defaultValue={new Date()}
+                            onChange={(e) => {
+                                setTime({ time: e.toISOString() })
+
+                            }}
+                        />
+                    } />
+            </Col>
             <Col md="1"></Col>
         </Row>
         <Row>

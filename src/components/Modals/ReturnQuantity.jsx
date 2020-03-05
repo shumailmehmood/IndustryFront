@@ -3,11 +3,14 @@ import { Col, Row, Modal, FormGroup } from "react-bootstrap";
 import Card from '../Card/Card';
 import Button from "components/CustomButton/CustomButton";
 import { UPDATE_STOCK_BTN_NAME } from "../../misc/constants";
+import { useEffect } from 'react';
 
-const EditQuiz = (prop) => {
+const EditQuiz = React.memo((prop) => {
     const [loading, setLoading] = useState(false)
     const [value, setValue] = useState(0)
-    onsubmit = (data) => {
+    useEffect(()=>{},[])
+    
+   const onsubmit = () => {
         prop.handleReturn(value)
         prop.handleClose()
     }
@@ -58,6 +61,6 @@ const EditQuiz = (prop) => {
             </Modal.Body>
         </Modal>
     );
-};
+});
 
 export default EditQuiz;

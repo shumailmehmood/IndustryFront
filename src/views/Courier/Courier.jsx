@@ -3,6 +3,7 @@ import { Tab, Row, Col, Nav, NavItem } from 'react-bootstrap';
 import CourierForm from "../../components/Courier/Courier"
 import { getAllUsers, getAllItems } from "../../api/api"
 import { useState, useEffect } from 'react';
+import Sale from '../../components/Sale/Sale'
 import _ from 'lodash'
 const Courier = () => {
     const [user, setUser] = useState([])
@@ -48,6 +49,7 @@ const Courier = () => {
                         <Nav bsStyle="tabs">
                             <NavItem eventKey="send">Send Courier</NavItem>
                             <NavItem eventKey="receive">Return Courier</NavItem>
+                            <NavItem eventKey="view">View Sales</NavItem>
                         </Nav>
                     </Col>
                     <Col sm={12}>
@@ -57,6 +59,9 @@ const Courier = () => {
                             </Tab.Pane>
                             <Tab.Pane eventKey="receive">
                                 <CourierForm user={user} items={items} checkout={true} />
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="view">
+                                <Sale />
                             </Tab.Pane>
 
                         </Tab.Content>
