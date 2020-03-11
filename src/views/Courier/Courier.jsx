@@ -63,7 +63,6 @@ const Courier = () => {
                             <Tab.Pane eventKey="view">
                                 <Sale />
                             </Tab.Pane>
-
                         </Tab.Content>
                     </Col>
                 </Row>

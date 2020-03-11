@@ -284,7 +284,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                                     // ref={register({ required: true, validate: value => value !== "" })}
                                     onChange={(e) => setCount(e.target.value)}
                                     className={"form-control"}
-                                    placeholder="Enter Quantity"
+                                    placeholder="Enter Percentage"
                                 />
                             </FormGroup>
                         </Col>
