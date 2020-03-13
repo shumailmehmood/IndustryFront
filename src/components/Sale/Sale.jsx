@@ -34,8 +34,7 @@ const Sale = (props) => {
             // name: '',
             // barcode: '',
             // orderNo: ''
-        }
-        console.log(newParams)
+        }      
         if (state) {
             state.filtered.forEach(element => {
                 newParams[element.id] = element.value

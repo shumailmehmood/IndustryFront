@@ -28,8 +28,12 @@ function CategoryRegisteration({ user, items, checkout }) {
     const [index, setIndex] = useState(null)
     const [id, setId] = useState(null)
     const [saleAmount, setSaleAmount] = useState(0)
+    const [discount, setDiscount] = useState(0)
+    const [grandTotal, setGrandTotal] = useState(0)
+    const [recieved, setRecieved] = useState(0)
+    const [percentageTotal, setPercentageTotal] = useState(0)
+    const [tabload, setTabload] = useState(false)
     const {
-        register,
         handleSubmit,
         formState: { dirty },
     } = useForm();
@@ -37,7 +41,7 @@ function CategoryRegisteration({ user, items, checkout }) {
     }, [sendItems])
 
     const get = (state) => {
-        setLoading(true)
+         setTabload(true)
         if (selectedUser) {
             let newParams = {
                 from: state,
@@ -49,7 +53,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                     setSelectedUser(res.data ? res.data.uid : null);
                     setSendItems(res.data ? res.data.sendItems : null)
                     res.data ? !res.data.returnItems ? setRetrn(false) : setRetrn(true) : setRetrn(true)
-                    setLoading(false)
+                    setTabload(false)
                     calculateSale(res.data.sendItems)
                 }
             })
@@ -106,7 +110,6 @@ function CategoryRegisteration({ user, items, checkout }) {
         setSendItems(items)
     };
     let num = 0;
-
     let data = sendItems ?
         sendItems.map((element, i) => {
 
@@ -160,14 +163,14 @@ function CategoryRegisteration({ user, items, checkout }) {
         }
 
     ]
-    const onSubmit = (data) => { }
-    // console.log(sale);
+
+
     return (
         <div>
             <ReturnQuantity handleReturn={handleReturn} show={openModal} handleClose={() => setOpenModal(false)} />
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form >
                 <Row>
-                    <Col md="6">
+                    <Col md={6}>
                         <ControlLabel><b>Select User</b></ControlLabel>
                         {/* {console.log(selectedItem)} */}
                         <FormGroup>
@@ -180,7 +183,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                         </FormGroup>
 
                     </Col>
-                    {checkout ? <Col md="6">
+                    {checkout ? <Col md={6}>
                         <Card
                             content={<div>
                                 <Datetime
@@ -199,7 +202,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                 </Row>
                 {!checkout ?
                     <Row>
-                        <Col md="4">
+                        <Col md={4}>
                             <FormGroup>
                                 <Select
                                     placeholder="Select Item"
@@ -210,7 +213,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                                 />
                             </FormGroup>
                         </Col>
-                        <Col md="4">
+                        <Col md={4}>
                             <FormGroup>
                                 <input
                                     type="text"
@@ -223,7 +226,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                                 />
                             </FormGroup>
                         </Col>
-                        <Col md="4">
+                        <Col md={4}>
                             <Button disabled={retrn} type="submit" className="btn-fill" onClick={() => {
                                 let item = selectedItem;
                                 item['count'] = count;
@@ -239,14 +242,14 @@ function CategoryRegisteration({ user, items, checkout }) {
 
                     : null}
                 <Row>
-                    <Col md="1"></Col>
-                    <Col md="10">
+                    <Col md={1}></Col>
+                    <Col md={10}>
                         <Card
                             content={
                                 <ReactTable
                                     data={data}
                                     columns={columns}
-                                    loading={false}
+                                    loading={tabload}
                                     className="-striped -highlight"
                                     showPagination={false}
                                     defaultPageSize={10}
@@ -256,12 +259,12 @@ function CategoryRegisteration({ user, items, checkout }) {
                                 />
                             } />
                     </Col>
-                    <Col md="1"></Col>
+                    <Col md={1}></Col>
                 </Row>
                 {checkout ?
                     <Row>
-                        <Col md="1"></Col>
-                        <Col md="3">
+                        <Col md={1}></Col>
+                        <Col md={2}>
                             <ControlLabel>Sale Amout</ControlLabel>
                             <FormGroup>
                                 <input
@@ -274,35 +277,77 @@ function CategoryRegisteration({ user, items, checkout }) {
                                 />
                             </FormGroup>
                         </Col>
-                        <Col md="3">
+                        <Col md={1}>
                             <ControlLabel>Percentage</ControlLabel>
                             <FormGroup>
                                 <input
                                     type="text"
                                     name={`count`}
-                                    disabled={true}
-                                    // ref={register({ required: true, validate: value => value !== "" })}
-                                    onChange={(e) => setCount(e.target.value)}
+                                    value={discount}
+                                    onChange={(e) => {
+                                        setDiscount(e.target.value)
+                                        setGrandTotal(saleAmount - (saleAmount * e.target.value) / 100)
+                                        setPercentageTotal((saleAmount * e.target.value) / 100)
+                                    }}
                                     className={"form-control"}
                                     placeholder="Enter Percentage"
                                 />
                             </FormGroup>
                         </Col>
-                        <Col md="3">
+                        <Col md={2}>
                             <ControlLabel>Grand Total</ControlLabel>
                             <FormGroup>
                                 <input
                                     type="text"
                                     name={`count`}
                                     disabled={true}
-                                    // ref={register({ required: true, validate: value => value !== "" })}
-                                    onChange={(e) => setCount(e.target.value)}
+                                    value={grandTotal}
                                     className={"form-control"}
                                     placeholder="Enter Quantity"
                                 />
                             </FormGroup>
                         </Col>
-                        <Col md="1"></Col>
+                        <Col md={1}>
+                            <ControlLabel>% Total</ControlLabel>
+                            <FormGroup>
+                                <input
+                                    type="text"
+                                    name={`count`}
+                                    value={percentageTotal}
+                                    disabled={true}
+                                    className={"form-control"}
+                                    placeholder="Enter Percentage"
+                                />
+                            </FormGroup>
+                        </Col>
+                        <Col md={2}>
+                            <ControlLabel>Recieved</ControlLabel>
+                            <FormGroup>
+                                <input
+                                    type="text"
+                                    name={`count`}
+                                    value={recieved}
+                                    // ref={register({ required: true, validate: value => value !== "" })}
+                                    onChange={(e) => setRecieved(e.target.value)}
+                                    className={"form-control"}
+                                    placeholder="Enter Amount"
+                                />
+                            </FormGroup>
+                        </Col>
+                        <Col md={2}>
+                            <ControlLabel>Remaining</ControlLabel>
+                            <FormGroup>
+                                <input
+                                    type="text"
+                                    name={`count`}
+                                    value={percentageTotal - recieved}
+                                    disabled={true}
+                                    className={"form-control"}
+                                    placeholder="Enter Amount"
+                                />
+                            </FormGroup>
+                        </Col>
+                        <Col md={1}></Col>
                     </Row>
                     : null}
                 <center>
