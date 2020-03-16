@@ -115,7 +115,7 @@ const ViewStock = (props) => {
     ]
     return (
         <div>
-            {console.log("Honto::",data)}
+          
             <SellerDetails get={get} seller={sellerData} show={seller} handleClose={() => setSeller(false)} />
             <QuantityUpdate id={id} show={update} handleClose={() => setUpdate(false)} />
             <Card

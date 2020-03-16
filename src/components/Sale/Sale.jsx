@@ -108,7 +108,6 @@ const Sale = (props) => {
                             defaultValue={new Date()}
                             onChange={(e) => {
                                 setTime({ time: e.toISOString() })
-
                             }}
                         />
                     } />
