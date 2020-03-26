@@ -6,7 +6,6 @@ import "react-table/react-table.css";
 import Card from "../Card/Card"
 import MiniTableButton from "../MiniTableButton/MiniTableButton"
 import { get_all_courier } from "../../api/api"
-
 import Items from "../Modals/SearchBarCode";
 const Sale = (props) => {
     const [update, setUpdate] = useState(false)
@@ -34,31 +33,33 @@ const Sale = (props) => {
             // name: '',
             // barcode: '',
             // orderNo: ''
-        }      
-        if (state) {
-            state.filtered.forEach(element => {
-                newParams[element.id] = element.value
-            })
         }
+        // if (state) {
+        //     state.filtered.forEach(element => {
+        //         newParams[element.id] = element.value
+        //     })
+        // }
         get_all_courier(newParams).then(res => {
             if (res.error) { } else {
-                setDataDB(res.data.data)
-                setMetaData(res.data.metadata[0])
+                setDataDB(res.data)
+                // setMetaData(res.data.metadata)
                 // console.log(res.data.data)
                 setLoading(false)
             }
         })
-    }
-
-    let data = dataDB.length ?
+    }   
+    let data = dataDB ?
         dataDB.map((element, index) => {
             return {
                 name: element.uid.name,
                 vNo: element.uid.vehical_no,
-                status: element.returnItems ? "Completed" : "Pending",
+                status: element.return ? "Completed" : "Pending",
                 action: <MiniTableButton text={<i className="fa fa-eye" aria-hidden="true"></i>} handleClick={() => {
                     setCourierItems(element.sendItems)
-                }} />
+                    setItems(true)
+                }} />,
+                cashInHand: element.grandTotal,
+                commission: element.commissionedAmount
             }
         })
 
@@ -68,7 +69,7 @@ const Sale = (props) => {
             Header: "Name",
             accessor: "name",
             sortable: false,
-            filterable: true,
+            filterable: false,
 
         },
 
@@ -76,7 +77,18 @@ const Sale = (props) => {
             Header: "Vehicle No",
             accessor: "vNo",
             sortable: false,
-            filterable: true
+            filterable: false
+        }, {
+            Header: "Cash In Hand",
+            accessor: "cashInHand",
+            sortable: false,
+            filterable: false
+        },
+        {
+            Header: "Commission",
+            accessor: "commission",
+            sortable: false,
+            filterable: false
         },
 
         {
@@ -97,7 +109,7 @@ const Sale = (props) => {
 
     ]
     return (<div>
-        <Items data={itemsData} show={items} handleClose={() => setItems(false)} />
+        <Items data={courierItems} show={items} handleClose={() => setItems(false)} />
         <Row>
             <Col md="1"></Col>
             <Col md="10">
@@ -109,6 +121,7 @@ const Sale = (props) => {
                             onChange={(e) => {
                                 setTime({ time: e.toISOString() })
                             }}
+                            
                         />
                     } />
             </Col>
@@ -122,10 +135,10 @@ const Sale = (props) => {
                         columns={columns}
                         manual
                         defaultPageSize={10}
-                        onFetchData={get}
+                        // onFetchData={get}
                         showPaginationBottom
                         showPaginationTop={false}
-                        pages={metaData ? metaData.pages : 1}
+                        // pages={metaData ? metaData.pages : 1}
                         loading={loading}
                         sortable={false}
                         className="-striped -highlight"

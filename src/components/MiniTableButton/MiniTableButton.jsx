@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom"
 const MiniTableButton = (props) => {
     return (
         <div>
-            <Button type="button" onClick={props.handleClick} className= {!props.style?"btn-fill":"cond-btn"}  >
+            <Button type="button" onClick={props.handleClick} disable={props.disable} className= {!props.style?"btn-fill":"cond-btn"}  >
                 {props.text}<i className="fa fa-link"></i>
             </Button>
         </div>

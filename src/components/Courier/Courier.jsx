@@ -33,15 +33,12 @@ function CategoryRegisteration({ user, items, checkout }) {
     const [recieved, setRecieved] = useState(0)
     const [percentageTotal, setPercentageTotal] = useState(0)
     const [tabload, setTabload] = useState(false)
-    const {
-        handleSubmit,
-        formState: { dirty },
-    } = useForm();
+
     useEffect(() => {
     }, [sendItems])
 
     const get = (state) => {
-         setTabload(true)
+        setTabload(true)
         if (selectedUser) {
             let newParams = {
                 from: state,
@@ -52,7 +49,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                     setId(res.data ? res.data._id : null)
                     setSelectedUser(res.data ? res.data.uid : null);
                     setSendItems(res.data ? res.data.sendItems : null)
-                    res.data ? !res.data.returnItems ? setRetrn(false) : setRetrn(true) : setRetrn(true)
+                    res.data ? !res.data.return ? setRetrn(false) : setRetrn(true) : setRetrn(true)
                     setTabload(false)
                     calculateSale(res.data.sendItems)
                 }
@@ -61,12 +58,13 @@ function CategoryRegisteration({ user, items, checkout }) {
             ErrorToast("Select User");
         }
     }
-
+ 
     const sendCourierData = () => {
         setLoading(true);
         let data = {
             ...selectedUser,
-            sendItems: sendItems
+            sendItems: sendItems,
+
         }
         if (!checkout) {
             sendCourier(data).then(res => {
@@ -79,7 +77,14 @@ function CategoryRegisteration({ user, items, checkout }) {
                 }
             })
         } else {
-            courier_checkout(id, data).then(res => {
+            let body = {
+                ...data,
+                grandTotal: grandTotal,
+                commission: discount,
+                commissionAmount: percentageTotal,
+                recieveAmount: recieved
+            }
+            courier_checkout(id, body).then(res => {
                 if (res.error) {
                     setLoading(false)
                     ErrorToast(res.error.response.data);
@@ -91,8 +96,8 @@ function CategoryRegisteration({ user, items, checkout }) {
         }
 
     }
-    const calculateSale = (value) => {
-        let sale = saleAmount;
+    const calculateSale = (value, back) => {
+        let sale = back ? 0 : saleAmount;
         if (value) {
             value.map((element, i) => {
                 sale += +element.sale_price * +element.count
@@ -101,22 +106,23 @@ function CategoryRegisteration({ user, items, checkout }) {
             setSaleAmount(sale)
         }
 
+
     }
     const handleReturn = (value) => {
         let items = sendItems;
         items[index]['return_count'] = +value;
         items[index]['count'] = +items[index].count - +value;
-        calculateSale(items)
+
+        calculateSale(items, true)
         setSendItems(items)
     };
     let num = 0;
     let data = sendItems ?
         sendItems.map((element, i) => {
-
             num = +element.return_count ? +element.return_count : 0
             return {
                 name: element.item_name,
-                qty: <Mini text={element.count} handleClick={() => {
+                qty: <Mini text={element.count} disable={retrn} handleClick={() => {
                     setOpenModal(true)
                     setIndex(i)
                 }} />,
@@ -163,20 +169,41 @@ function CategoryRegisteration({ user, items, checkout }) {
         }
 
     ]
+    const addItem = () => {
+        let item = selectedItem;
+        item['count'] = count;
+        let send = sendItems;
+        send.push(item);
+        setSendItems(send);
+    }
+    const onSubmit = () => {
 
-
+    }
+    const {
+        handleSubmit
+    } = useForm();
     return (
         <div>
+
             <ReturnQuantity handleReturn={handleReturn} show={openModal} handleClose={() => setOpenModal(false)} />
-            <form >
+
+
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <Row>
                     <Col md={6}>
                         <ControlLabel><b>Select User</b></ControlLabel>
-                        {/* {console.log(selectedItem)} */}
                         <FormGroup>
                             <Select
                                 placeholder="Select User"
-                                onChange={(e) => setSelectedUser(e.value)}
+                                onChange={(e) => {                                   
+                                    setSelectedUser(e.value)
+                                    setSendItems([])
+                                    setSaleAmount(0)
+                                    setDiscount(e.value.uid.perAmount)
+                                    setGrandTotal(0)
+                                    setRecieved(0)
+                                    setPercentageTotal(0)
+                                }}
                                 //  value={}
                                 options={user}
                             />
@@ -227,14 +254,7 @@ function CategoryRegisteration({ user, items, checkout }) {
                             </FormGroup>
                         </Col>
                         <Col md={4}>
-                            <Button disabled={retrn} type="submit" className="btn-fill" onClick={() => {
-                                let item = selectedItem;
-                                item['count'] = count;
-                                console.log(item)
-                                let send = sendItems;
-                                send.push(item);
-                                setSendItems(send);
-                            }} >
+                            <Button disabled={retrn} type="submit" className="btn-fill" onClick={addItem} >
                                 Add Item
                 </Button>
                         </Col>
@@ -261,103 +281,105 @@ function CategoryRegisteration({ user, items, checkout }) {
                     </Col>
                     <Col md={1}></Col>
                 </Row>
-                {checkout ?
-                    <Row>
-                        <Col md={1}></Col>
-                        <Col md={2}>
-                            <ControlLabel>Sale Amout</ControlLabel>
-                            <FormGroup>
-                                <input
-                                    type="text"
-                                    name={`saleAmount`}
-                                    disabled={true}
-                                    value={saleAmount}
-                                    className={"form-control"}
-                                    placeholder="Sale Amount"
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col md={1}>
-                            <ControlLabel>Percentage</ControlLabel>
-                            <FormGroup>
-                                <input
-                                    type="text"
-                                    name={`count`}
-                                    value={discount}
-                                    onChange={(e) => {
-                                        setDiscount(e.target.value)
-                                        setGrandTotal(saleAmount - (saleAmount * e.target.value) / 100)
-                                        setPercentageTotal((saleAmount * e.target.value) / 100)
-                                    }}
-                                    className={"form-control"}
-                                    placeholder="Enter Percentage"
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col md={2}>
-                            <ControlLabel>Grand Total</ControlLabel>
-                            <FormGroup>
-                                <input
-                                    type="text"
-                                    name={`count`}
-                                    disabled={true}
-                                    value={grandTotal}
-                                    className={"form-control"}
-                                    placeholder="Enter Quantity"
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col md={1}>
-                            <ControlLabel>% Total</ControlLabel>
-                            <FormGroup>
-                                <input
-                                    type="text"
-                                    name={`count`}
-                                    value={percentageTotal}
-                                    disabled={true}
-                                    className={"form-control"}
-                                    placeholder="Enter Percentage"
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col md={2}>
-                            <ControlLabel>Recieved</ControlLabel>
-                            <FormGroup>
-                                <input
-                                    type="text"
-                                    name={`count`}
-                                    value={recieved}
-                                    // ref={register({ required: true, validate: value => value !== "" })}
-                                    onChange={(e) => setRecieved(e.target.value)}
-                                    className={"form-control"}
-                                    placeholder="Enter Amount"
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col md={2}>
-                            <ControlLabel>Remaining</ControlLabel>
-                            <FormGroup>
-                                <input
-                                    type="text"
-                                    name={`count`}
-                                    value={percentageTotal - recieved}
-                                    disabled={true}
-                                    className={"form-control"}
-                                    placeholder="Enter Amount"
-                                />
-                            </FormGroup>
-                        </Col>
-                        <Col md={1}></Col>
-                    </Row>
-                    : null}
+                {
+                    checkout ?
+                        <Row>
+                            <Col md={1}></Col>
+                            <Col md={2}>
+                                <ControlLabel>Sale Amout</ControlLabel>
+                                <FormGroup>
+                                    <input
+                                        type="text"
+                                        name={`saleAmount`}
+                                        disabled={true}
+                                        value={saleAmount}
+                                        className={"form-control"}
+                                        placeholder="Sale Amount"
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={1}>
+                                <ControlLabel>Percentage</ControlLabel>
+                                <FormGroup>
+                                    <input
+                                        type="text"
+                                        name={`count`}
+                                        value={discount}
+                                        onChange={(e) => {
+                                            setDiscount(e.target.value)
+                                            setGrandTotal(saleAmount - (saleAmount * e.target.value) / 100)
+                                            setPercentageTotal((saleAmount * e.target.value) / 100)
+                                        }}
+                                        className={"form-control"}
+                                        placeholder="Enter Percentage"
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={2}>
+                                <ControlLabel>Grand Total</ControlLabel>
+                                <FormGroup>
+                                    <input
+                                        type="text"
+                                        name={`count`}
+                                        disabled={true}
+                                        value={grandTotal}
+                                        className={"form-control"}
+                                        placeholder="Enter Quantity"
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={1}>
+                                <ControlLabel>% Total</ControlLabel>
+                                <FormGroup>
+                                    <input
+                                        type="text"
+                                        name={`count`}
+                                        value={percentageTotal}
+                                        disabled={true}
+                                        className={"form-control"}
+                                        placeholder="Enter Percentage"
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={2}>
+                                <ControlLabel>Recieved</ControlLabel>
+                                <FormGroup>
+                                    <input
+                                        type="text"
+                                        name={`count`}
+                                        value={recieved}
+                                        // ref={register({ required: true, validate: value => value !== "" })}
+                                        onChange={(e) => setRecieved(e.target.value)}
+                                        className={"form-control"}
+                                        placeholder="Enter Amount"
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={2}>
+                                <ControlLabel>Remaining</ControlLabel>
+                                <FormGroup>
+                                    <input
+                                        type="text"
+                                        name={`count`}
+                                        value={percentageTotal - recieved}
+                                        disabled={true}
+                                        className={"form-control"}
+                                        placeholder="Enter Amount"
+                                    />
+                                </FormGroup>
+                            </Col>
+                            <Col md={1}></Col>
+                        </Row>
+                        : null
+                }
                 <center>
                     <Button disabled={retrn} type="button" className="btn-fill" onClick={() => sendCourierData()} >
                         {loading ? <div><span>Loading...</span><i className="fa fa-spin fa-spinner" /></div> : REG_BTN_NAME}
                     </Button>
                 </center>
-            </form>
+            </form >
 
-        </div>
+        </div >
     );
 }
 

@@ -12,12 +12,13 @@ const Courier = () => {
     useEffect(() => {
         getAllUsers().then(res => {
             if (res.error) { } else {
-                setUser(_.chain(res.data).map(({ name, _id, vehicle_no }) => name = {
+                setUser(_.chain(res.data).map(({ name, _id, vehicle_no,salary_type:{amount} }) => name = {
                     value: {
                         uid: {
                             item: _id,
                             name: name,
                             vehical_no: vehicle_no,
+                            perAmount:amount
                         }
                     }, label: name
                 }).value())

@@ -12,6 +12,7 @@ import { SuccessfullToast, ErrorToast } from "../../misc/helper"
 function SellerRegisteration(props) {
     const [loading, setLoading] = useState(false)
     const [category, setCategory] = useState(false)
+    const [amount, setAmount] = useState(0);
     const {
         register,
         handleSubmit,
@@ -20,6 +21,7 @@ function SellerRegisteration(props) {
     const onSubmit = (data) => {
         console.log(data);
         data.salary_type = category;
+        // data.amount = amount;
         registerUser(data).then(res => {
             if (res.error) {
                 setLoading(false)
@@ -67,6 +69,15 @@ function SellerRegisteration(props) {
                         onChange={(e) => setCategory(e.value)}
                         // value={value2}
                         options={[{ label: 'Base Salary', value: 'base' }, { label: 'Percentage', value: 'percent' }]}
+                    />
+                </FormGroup>               
+                <FormGroup>
+                    <input
+                        type="text"
+                        name={`amount`}
+                        ref={register}
+                        className={"form-control"}
+                        placeholder="Enter Amount"
                     />
                 </FormGroup>
                 <Button type="submit" className="btn-fill" onClick={() => setLoading(true)} >

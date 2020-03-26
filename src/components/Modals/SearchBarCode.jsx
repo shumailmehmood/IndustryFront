@@ -3,57 +3,39 @@ import { Col, Row, Modal, FormGroup } from "react-bootstrap";
 import Card from '../Card/Card';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import Select from 'react-select';
-import MiniTableButton from "../MiniTableButton/MiniTableButton"
-import QuantityUpdate from "./ReturnQuantity"
 const EditQuiz = (prop) => {
-    const[obj,setObj]=useState({})
-    const[view,setView]=useState(false)
-
-    const {data}=prop;
-    // let data = [];
-    console.log(data);
-
+    const { data } = prop;
     let record = data ? data.map((element) => {
         return {
-            salePrice: element.salePrice,            
-            barcode: element.barcode,
-            name: element.name,
-            quantity:element.quantity?element.quantity:"-"
-            // <MiniTableButton text={element.quantity?element.quantity:"-"} handleClick={() => {
-               
-            //     setObj({barcode:element.barcode,stockIn:element.quantity?element.quantity:0})
-            //     setView(true)
-            // }} />
-            
+            name: element.item_name,
+            quantity: +element.count + +element.return_count,
+            sold: element.count,
+            return: element.return_count
         }
     }) : []
     const columns = [
-        {
-            Header: "Barcode",
-            accessor: "barcode",
-            sortable: false
-        },
         {
             Header: "Name",
             accessor: "name",
             sortable: false
         },
         {
-            Header: "Quantity",
+            Header: "Total Quantity",
             accessor: "quantity",
             sortable: false
         },
         {
-            Header: "Price",
-            accessor: "salePrice",
+            Header: "Sold",
+            accessor: "sold",
+            sortable: false
+        },
+        {
+            Header: "Return",
+            accessor: "return",
             sortable: false
         }
     ]
     return (<div>
-
-<QuantityUpdate obj={obj} show={view} handleClose={()=>setView(false)}/>
-    
         <Modal show={prop.show} onHide={prop.handleClose} bsSize="lg">
             <Modal.Header className="mdhead" closeButton >
                 <Modal.Title>Search BarCode</Modal.Title>
@@ -80,7 +62,7 @@ const EditQuiz = (prop) => {
                 </Row>
             </Modal.Body>
         </Modal>
-        </div>
+    </div>
     );
 };
 
