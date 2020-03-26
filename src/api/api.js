@@ -5,7 +5,7 @@ import { Body } from 'react-bootstrap/lib/Media';
 require('dotenv').config()
 
 // let apiBaseUrl = 'http://loca';
-let apiBaseUrl =  'http://localhost:3003';
+let apiBaseUrl =  'https://sales-management-server.herokuapp.com';
 
 export const testAuth = async () => {
     return await resolve(axios.get(`${apiBaseUrl}/profile`).then(res => res.data));
