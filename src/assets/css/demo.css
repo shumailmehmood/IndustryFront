@@ -12,12 +12,23 @@
         position: absolute;
     }
 }
-
+.row.no-gutter {
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .row.no-gutter [class*='col-']:not(:first-child),
+  .row.no-gutter [class*='col-']:not(:last-child) {
+    padding-right: 0;
+    padding-left: 0;
+  }
 .all-icons [class^="pe-"]{
     font-size: 40px;
 }
 .all-icons input{
     border: 0;
+}
+.rt-resizable-header-content{
+text-align: left;
 }
 .all-icons .font-icon-detail{
     text-align: center;

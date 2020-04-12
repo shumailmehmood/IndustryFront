@@ -19,7 +19,7 @@ function SellerRegisteration(props) {
         formState: { dirty },
     } = useForm();
     const onSubmit = (data) => {
-        console.log(data);
+      
         data.salary_type = category;
         // data.amount = amount;
         registerUser(data).then(res => {

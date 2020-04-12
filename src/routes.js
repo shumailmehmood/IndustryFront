@@ -4,7 +4,7 @@ import UnAuthorized from "views/UnAuthorized.jsx";
 
 import Registeration from "./views/Registeration/Registeration"
 
-
+import Accounts from "./views/Accounts/Accounts"
 import Courier from './views/Courier/Courier'
 
 var dashboardRoutes = [
@@ -22,6 +22,13 @@ var dashboardRoutes = [
     name: "Daily Sale",
     component: Courier,
     icon: "pe-7s-paperclip"
+  },
+  {
+    path: "/accounts",
+    layout: "/admin",
+    name: "Accounts",
+    component: Accounts,
+    icon: "pe-7s-note"
   },
 
 

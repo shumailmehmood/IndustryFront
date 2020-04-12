@@ -17,6 +17,7 @@ const Sale = (props) => {
     const [id, setId] = useState('')
     const [time, setTime] = useState({ time: new Date().toISOString() });
     const [courierItems, setCourierItems] = useState(null)
+    const [open, setOpen] = useState(false)
 
     useEffect(() => {
         get();
@@ -59,7 +60,7 @@ const Sale = (props) => {
                     setItems(true)
                 }} />,
                 cashInHand: element.grandTotal,
-                commission: element.commissionedAmount
+                commission: element.commissionedAmount?element.commissionedAmount:"Basic Pay"
             }
         })
 
@@ -117,10 +118,15 @@ const Sale = (props) => {
                     content={
                         <Datetime
                             inputProps={{ placeholder: "Datetime Picker Here" }}
-                            defaultValue={new Date()}
-                            onChange={(e) => {
-                                setTime({ time: e.toISOString() })
-                            }}
+                            defaultValue={new Date()}                           
+                            onFocus={() => setOpen(true)}
+                                    onChange={(e) => {
+                                        setTime({ time: e.toISOString() })
+                                        setOpen(false)
+                                        get(e.toISOString())
+
+                                    }}
+                                    open={open}
                             
                         />
                     } />

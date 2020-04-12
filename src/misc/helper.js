@@ -1,12 +1,28 @@
 import { toast } from 'react-toastify';
 import _ from 'lodash'
+import moment from 'moment';
 import { OneDigitNumber, TwoDigitNumber, ThreeDigitNumber } from './constants';
 export const SuccessfullToast = (info) => {
     toast.success(info, {
         position: toast.POSITION.TOP_RIGHT
     });
 }
+export const dateFormat = (inputDate) => {
 
+    return moment(inputDate).format('MMMM Do YY, h:mm:ss a');
+}
+export const setQuery = () => {
+
+}
+export const getQuery = () => {
+    var url = window.location.search;
+    var qs = url.substring(url.indexOf('?') + 1).split('&');
+    for(var i = 0, result = {}; i < qs.length; i++){
+        qs[i] = qs[i].split('=');
+        result[qs[i][0]] = decodeURIComponent(qs[i][1]);
+    }
+    return result;
+}
 export const ErrorToast = (info) => {
     toast.error(info, {
         position: toast.POSITION.TOP_RIGHT
@@ -48,19 +64,19 @@ const operations = (first, second, operand) => {
     }
 }
 const makeUniqueQuestions = (array, question) => {
-    if (array.find(element => element.question === question)){
+    if (array.find(element => element.question === question)) {
         return true
-    }else{
+    } else {
         array.push(question)
         return false;
     }
 }
 const generator = (digits, questions, savedQuestions) => {
     let operandArray = ['+', '-', '/', '*'];
-    let array = [], int1, int2, operand, correctOption, question,dbArray=savedQuestions;   
+    let array = [], int1, int2, operand, correctOption, question, dbArray = savedQuestions;
     while (array.length < questions) {
         int1 = Math.floor(Math.random() * (digits.end - digits.start + 1)) + digits.start;
-        int2 = Math.floor(Math.random() * (digits.end - digits.start + 1)) + digits.start;        
+        int2 = Math.floor(Math.random() * (digits.end - digits.start + 1)) + digits.start;
         operand = (array.length + 1) % (operandArray.length)
         operand = operandArray[operand];
         correctOption = Math.round(operations(int1, int2, operand) * 10) / 10;
