@@ -1,19 +1,4 @@
-/*!
 
-=========================================================
-* Light Bootstrap Dashboard PRO React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React, { Component } from "react";
 import { Grid, Col, Row } from "react-bootstrap";
 // react component used to create charts
@@ -24,17 +9,16 @@ import { VectorMap } from "react-jvectormap";
 import Card from "components/Card/Card.jsx";
 import StatsCard from "components/Card/StatsCard.jsx";
 import Tasks from "components/Tasks/Tasks.jsx";
-
+import { get_DashBoardMonthPerDayEarning, get_DashBoardUsers, get_DashBoardtodayEarning, get_DashBoardMonthEarning } from "../api/api";
 import {
-  dataPie,
-  dataSales,
-  optionsSales,
+
   responsiveSales,
   dataBar,
   optionsBar,
   responsiveBar,
   table_data
 } from "variables/Variables.jsx";
+const tooltip = require('chartist-plugin-tooltip');
 
 var mapData = {
   AU: 760,
@@ -49,8 +33,110 @@ var mapData = {
   RU: 300,
   US: 2920
 };
+const percentageCalculator = (...args) => {
+  let array1 = [], array2 = [], value = 0, total = 0;
 
+  total = args.reduce((a, b) => a + b)
+  args.forEach(element => {
+    value = Math.abs(Math.ceil((element / total) * 100))
+    array1.push(value + "%");
+    array2.push(value);
+  })
+  return {
+    labels: array1,
+    series: array2
+  };
+}
+const salesData = (array) => {
+  let array1 = [], array2 = [];
+  array.forEach(element => {
+    array1.push(element._id);
+    array2.push(element.total)
+  })
+
+  return {
+    labels: array1,
+    series: [array2],
+    max: Math.max(...array2)
+  }
+}
 class Dashboard extends Component {
+  state = {
+    dataPie: {},
+    percent: 0,
+    basic: 0,
+    today: 0,
+    month: 0,
+    dataSales: {},
+    optionsSales: {
+      low: 0,
+      high: 10000,
+      showArea: false,
+
+      height: "245px",
+      axisX: {
+        showGrid: false
+      },
+      lineSmooth: true,
+      showLine: true,
+      showPoint: true,
+      fullWidth: true,
+      chartPadding: {
+        right: 50
+      },
+       plugins:[ tooltip()]
+
+    }
+  }
+
+  componentDidMount() {
+    get_DashBoardUsers().then(res => {
+      if (res.error) {
+
+      } else {
+
+        this.setState({
+          percent: res.data.Percentage,
+          basic: res.data.Basic,
+          dataPie: percentageCalculator(res.data.Percentage, res.data.Basic)
+        })
+      }
+    })
+    get_DashBoardtodayEarning().then(res => {
+      if (res.error) {
+
+      } else {
+
+        this.setState({
+          today: res.data.total
+        })
+      }
+    })
+    get_DashBoardMonthEarning().then(res => {
+      if (res.error) {
+
+      } else {
+
+        this.setState({
+          month: res.data.total
+        })
+      }
+    })
+    get_DashBoardMonthPerDayEarning().then(res => {
+      if (res.error) {
+
+      } else {
+        let { optionsSales } = this.state;
+        let result = salesData(res.data);
+        optionsSales['high'] = result.max;
+        delete result.max;
+        this.setState({
+          dataSales: result,
+          optionsSales
+        })
+      }
+    })
+  }
   createTableData() {
     var tableRows = [];
     for (var i = 0; i < table_data.length; i++) {
@@ -70,6 +156,8 @@ class Dashboard extends Component {
     return tableRows;
   }
   render() {
+    const { dataPie, month, today, percent, basic, dataSales, optionsSales } = this.state;
+
     return (
       <div className="main-content">
         <Grid fluid>
@@ -87,25 +175,25 @@ class Dashboard extends Component {
               <StatsCard
                 bigIcon={<i className="pe-7s-wallet text-success" />}
                 statsText="Revenue"
-                statsValue="$1,345"
+                statsValue={`RS${month}`}
                 statsIcon={<i className="fa fa-calendar-o" />}
-                statsIconText="Last day"
+                statsIconText="This Month Earning so Far"
               />
             </Col>
             <Col lg={3} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-graph1 text-danger" />}
-                statsText="Errors"
-                statsValue="23"
+                statsText="Earning"
+                statsValue={`RS${today}`}
                 statsIcon={<i className="fa fa-clock-o" />}
-                statsIconText="In the last hour"
+                statsIconText="Today Earning So Far"
               />
             </Col>
             <Col lg={3} sm={6}>
               <StatsCard
-                bigIcon={<i className="fa fa-twitter text-info" />}
-                statsText="Followers"
-                statsValue="+45"
+                bigIcon={<i className="fa fa-registered text-info" />}
+                statsText="Registered"
+                statsValue={percent + basic}
                 statsIcon={<i className="fa fa-refresh" />}
                 statsIconText="Updated now"
               />
@@ -163,14 +251,14 @@ class Dashboard extends Component {
           <Row>
             <Col md={4}>
               <Card
-                title="Email Statistics"
-                category="Last Campaign Performance"
+                title="Users Statistics"
+                category="No of Catagorical users"
                 content={<ChartistGraph data={dataPie} type="Pie" />}
                 legend={
                   <div>
-                    <i className="fa fa-circle text-info" /> Open
-                    <i className="fa fa-circle text-danger" /> Bounce
-                    <i className="fa fa-circle text-warning" /> Unsubscribe
+                    <i className="fa fa-circle text-info" />On Percentage {percent}
+                    <i className="fa fa-circle text-danger" /> On Basic Pay {basic}
+
                   </div>
                 }
                 stats={
@@ -182,8 +270,8 @@ class Dashboard extends Component {
             </Col>
             <Col md={8}>
               <Card
-                title="Users Behavior"
-                category="24 Hours performance"
+                title="Monthly Sale"
+                category="Monthly per day sale"
                 content={
                   <ChartistGraph
                     data={dataSales}
@@ -197,7 +285,7 @@ class Dashboard extends Component {
                     <i className="fa fa-circle text-info" /> Open
                     <i className="fa fa-circle text-danger" /> Click
                     <i className="fa fa-circle text-warning" /> Click Second
-                    Time
+              Time
                   </div>
                 }
                 stats={

@@ -48,7 +48,7 @@ class Sidebar extends Component {
   getCollapseStates = routes => {
     let initialState = {};
     routes.map((prop, key) => {
-      if (prop.hideself ) {
+      if (prop.hideself) {
         return null
       }
       if (prop.collapse) {
@@ -81,7 +81,7 @@ class Sidebar extends Component {
       if (prop.redirect) {
         return null;
       }
-      if (prop.hideself ) {
+      if (prop.hideself) {
         return null
       }
       if (prop.collapse) {
@@ -203,7 +203,7 @@ class Sidebar extends Component {
             className="simple-text logo-normal"
             target="_blank"
           >
-           POS
+            Sales Management
           </a>
         </div>
         <div className="sidebar-wrapper" ref="sidebarWrapper">
@@ -220,7 +220,7 @@ class Sidebar extends Component {
                 }}
               >
                 <span>
-                 Admin
+                  Admin
                   <b
                     className={
                       this.state.openAvatar ? "caret rotate-180" : "caret"
@@ -229,7 +229,7 @@ class Sidebar extends Component {
                 </span>
               </a>
               <Collapse in={this.state.openAvatar}>
-                <ul className="nav">             
+                <ul className="nav">
                   {/* <li onClick={() => {localStorage.clear(); window.location.reload();}}>
                     <a>
                       <span className="sidebar-normal"><i className="fa fa-sign-out" />Log Out</span>

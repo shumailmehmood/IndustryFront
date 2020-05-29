@@ -19,7 +19,7 @@ function SellerRegisteration(props) {
         formState: { dirty },
     } = useForm();
     const onSubmit = (data) => {
-      
+
         data.salary_type = category;
         // data.amount = amount;
         registerUser(data).then(res => {
@@ -56,7 +56,7 @@ function SellerRegisteration(props) {
                 </FormGroup>
                 <FormGroup>
                     <input
-                        type="text"
+                        type="number"
                         name={`phoneNo`}
                         ref={register({ required: true, validate: value => value !== "" })}
                         className={"form-control"}
@@ -70,10 +70,10 @@ function SellerRegisteration(props) {
                         // value={value2}
                         options={[{ label: 'Base Salary', value: 'base' }, { label: 'Percentage', value: 'percent' }]}
                     />
-                </FormGroup>               
+                </FormGroup>
                 <FormGroup>
                     <input
-                        type="text"
+                        type="number"
                         name={`amount`}
                         ref={register}
                         className={"form-control"}

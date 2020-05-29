@@ -5,7 +5,7 @@ import { Body } from 'react-bootstrap/lib/Media';
 require('dotenv').config()
 
 // let apiBaseUrl = "https://sales-management-server.herokuapp.com"
-let apiBaseUrl = 'http://localhost:3003';
+let apiBaseUrl = 'http://localhost:3004';
 
 export const testAuth = async () => {
     return await resolve(axios.get(`${apiBaseUrl}/profile`).then(res => res.data));
@@ -68,8 +68,22 @@ export const get_RemainingTotal = async (params) => {
     return await resolve(axios.get(`${apiBaseUrl}/api/v1/get_remainingAmount?id=${params.id}`)
         .then(res => res.data));
 }
-
-
+export const get_DashBoardUsers = async () => {
+    return await resolve(axios.get(`${apiBaseUrl}/api/v1/get_dashUsers`)
+        .then(res => res.data));
+}
+export const get_DashBoardtodayEarning = async () => {
+    return await resolve(axios.get(`${apiBaseUrl}/api/v1/get_todayEarning`)
+        .then(res => res.data));
+}
+export const get_DashBoardMonthEarning = async () => {
+    return await resolve(axios.get(`${apiBaseUrl}/api/v1/get_monthEarning`)
+        .then(res => res.data));
+}
+export const get_DashBoardMonthPerDayEarning = async () => {
+    return await resolve(axios.get(`${apiBaseUrl}/api/v1/get_monthEarningDayWise`)
+        .then(res => res.data));
+}
 
 
 //--------------------------------PUT--------------------------//

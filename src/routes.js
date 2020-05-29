@@ -6,9 +6,15 @@ import Registeration from "./views/Registeration/Registeration"
 
 import Accounts from "./views/Accounts/Accounts"
 import Courier from './views/Courier/Courier'
-
+import DashBoard from './views/Dashboard'
 var dashboardRoutes = [
-  
+  {
+    path: "/dashboard",
+    layout: "/admin",
+    name: "DashBoard",
+    component: DashBoard,
+    icon: "pe-7s-graph"
+  },
   {
     path: "/registeration",
     layout: "/admin",

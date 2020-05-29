@@ -615,8 +615,8 @@ const iconsArray = [
 //
 // Data for Pie Chart
 var dataPie = {
-  labels: ["40%", "20%", "40%"],
-  series: [40, 20, 40]
+  labels: ["40%", "20%", "40%","50%"],
+  series: [40, 20, 40,50]
 };
 
 // Data for Line Chart
@@ -633,13 +633,12 @@ var dataSales = {
   ],
   series: [
     [287, 385, 490, 492, 554, 586, 698, 695],
-    [67, 152, 143, 240, 287, 335, 435, 437],
-    [23, 113, 67, 108, 190, 239, 307, 308]
+    
   ]
 };
 var optionsSales = {
   low: 0,
-  high: 800,
+  high: 10000,
   showArea: false,
   height: "245px",
   axisX: {
