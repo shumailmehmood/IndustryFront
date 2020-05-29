@@ -1,0 +1,60 @@
+2020-04-13 10:39:01 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-04-13 10:39:01 - Started 10648
+2020-04-13 17:10:02 - Stopping salesmanagement.exe
+2020-04-13 17:10:02 - ProcessKill 10648
+2020-04-13 17:11:16 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-04-13 17:11:17 - Started 6864
+2020-04-20 09:45:58 - Stopping salesmanagement.exe
+2020-04-20 09:45:59 - ProcessKill 6864
+2020-04-20 09:47:39 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-04-20 09:47:41 - Started 5060
+2020-04-20 11:26:22 - Stopping salesmanagement.exe
+2020-04-20 11:26:23 - ProcessKill 5060
+2020-04-20 11:26:26 - Shutdown exception
+Message:Could not load file or assembly 'System.Management, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The media is write protected. (Exception from HRESULT: 0x80070013)
+Stacktrace:   at winsw.WrapperService.GetChildPids(Int32 pid)
+   at winsw.WrapperService.StopProcessAndChildren(Int32 pid)
+   at winsw.WrapperService.StopIt()
+   at winsw.WrapperService.OnShutdown()
+2020-04-20 11:27:43 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-04-20 11:27:44 - Started 4592
+2020-04-24 12:37:00 - Stopping salesmanagement.exe
+2020-04-24 12:37:01 - ProcessKill 4592
+2020-04-24 12:38:30 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-04-24 12:38:31 - Started 840
+2020-05-01 19:50:00 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-01 19:50:00 - Started 4612
+2020-05-04 16:26:53 - Stopping salesmanagement.exe
+2020-05-04 16:26:54 - ProcessKill 4612
+2020-05-04 19:32:29 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-04 19:32:29 - Started 5044
+2020-05-08 07:20:37 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-08 07:20:37 - Started 5076
+2020-05-11 11:55:06 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-11 11:55:06 - Started 4732
+2020-05-12 11:40:45 - Stopping salesmanagement.exe
+2020-05-12 11:40:45 - ProcessKill 4732
+2020-05-12 11:40:58 - Shutdown exception
+Message:The type initializer for 'System.Management.ManagementPath' threw an exception.
+Stacktrace:   at System.Management.ManagementScope._Clone(ManagementScope scope, IdentifierChangedEventHandler handler)
+   at System.Management.ManagementObjectSearcher..ctor(ManagementScope scope, ObjectQuery query, EnumerationOptions options)
+   at winsw.WrapperService.GetChildPids(Int32 pid)
+   at winsw.WrapperService.StopProcessAndChildren(Int32 pid)
+   at winsw.WrapperService.StopIt()
+   at winsw.WrapperService.OnShutdown()
+2020-05-12 11:41:46 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-12 11:41:46 - Started 2476
+2020-05-13 10:55:22 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-13 10:55:23 - Started 5048
+2020-05-14 17:53:54 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-14 17:53:55 - Started 4644
+2020-05-16 11:19:45 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-16 11:19:46 - Started 5548
+2020-05-18 07:45:48 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-18 07:45:49 - Started 5744
+2020-05-20 07:51:28 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-20 07:51:30 - Started 5724
+2020-05-21 11:42:49 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-21 11:42:49 - Started 5576
+2020-05-27 12:36:08 - Starting C:\Program Files\nodejs\node.exe  --harmony C:\Users\Shumail\AppData\Roaming\npm\node_modules\qckwinsvc\node_modules\node-windows\lib\wrapper.js --file F:\WebProjects\IceCream\IndustryFront\server.js --log "salesManagement wrapper" --grow 0.25 --wait 1 --maxrestarts 3 --abortonerror n --stopparentfirst undefined
+2020-05-27 12:36:08 - Started 5552
