@@ -2,36 +2,52 @@ import React from 'react';
 import {
     Col,
     Row,
+    Tab,Nav,
+    NavItem
 } from "react-bootstrap";
 import Card from "../../components/Card/Card"
 
 import Seller from '../../components/SellerRegisteration/SellerRegisteration'
 import Item from '../../components/ItemRegisterationForm/ItemRegisterationForm'
+import { getQuery } from '../../misc/helper'
 
 function Registeration(props) {
     return (
         <div>
-            <Row>
-                <Col md="6">
-                    <Card
+ <Tab.Container id="tabs-with-dropdown" defaultActiveKey={getQuery().tab ? getQuery().tab : "item"}>
+                <Row className="clearfix">
+                    <Col sm={12} className="tabular">
+                        <Nav bsStyle="tabs" className="bgtbs">
+                            <NavItem eventKey="item" onClick={() => {
+                                props.history.push(`${props.match.path}?tab=item`)
+                            }}>Items</NavItem>
+                            <NavItem eventKey="dp" onClick={() => {
+                                props.history.push(`${props.match.path}?tab=dp`)
+                            }}>Delivery Person</NavItem>
+                        </Nav>
+                    </Col>
+                    <Col sm={12}>
+                        <Tab.Content animation>
+                            <Tab.Pane eventKey="item">
+                             <Card
                         content={
                             <Item />
                         }
                     />
-
-                </Col>
-                <Col md="6">
-                    <Row>
-                        <Col md="1"></Col>
-                        <Col md="10"> <Card
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="dp">
+                             <Card
                             content={
                                 <Seller />
                             }
-                        /></Col>
-                        <Col md="1"></Col>
-                    </Row>
-                </Col>
-            </Row>
+                        />
+                            </Tab.Pane>
+                        </Tab.Content>
+                    </Col>
+                </Row>
+            </Tab.Container>
+
+          
         </div>
     );
 }

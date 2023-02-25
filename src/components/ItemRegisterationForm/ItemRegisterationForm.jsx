@@ -34,7 +34,6 @@ function SellerRegisteration(props) {
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <ControlLabel><b>Item's Registeration</b></ControlLabel>
                 <FormGroup>
                     <input
                         type="text"
@@ -72,7 +71,7 @@ function SellerRegisteration(props) {
                     />
                 </FormGroup>
                 
-                <Button type="submit" className="btn-fill" onClick={() => setLoading(true)} >
+                <Button type="submit" className="btn-fill" onClick={() => onSubmit()} >
                     {loading ? <div><span>loading...</span><i className="fa fa-spin fa-spinner" /></div> : REG_BTN_NAME}
                 </Button>
             </form>

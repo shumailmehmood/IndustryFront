@@ -35,7 +35,6 @@ function SellerRegisteration(props) {
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <ControlLabel><b>User's Registeration</b></ControlLabel>
                 <FormGroup>
                     <input
                         type="text"
