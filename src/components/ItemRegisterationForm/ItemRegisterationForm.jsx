@@ -9,7 +9,7 @@ import "../../assets/css/light-bootstrap-dashboard-pro-react.css"
 import { REG_BTN_NAME, REG_SUCCESS } from "../../misc/constants";
 import { SuccessfullToast, ErrorToast } from "../../misc/helper"
 import { registerItem } from "../../api/api"
-function SellerRegisteration(props) {
+function SellerRegisteration() {
     const [loading, setLoading] = useState(false)
     const {
         register,
@@ -41,6 +41,7 @@ function SellerRegisteration(props) {
                         ref={register({ required: true, validate: value => value !== "" })}
                         className={"form-control"}
                         placeholder="Enter Name"
+                        
                     />
                 </FormGroup>
                 <FormGroup>
@@ -50,6 +51,8 @@ function SellerRegisteration(props) {
                         ref={register({ required: true, validate: value => value !== "" })}
                         className={"form-control"}
                         placeholder="Enter Stock"
+                        
+
                     />
                 </FormGroup>
                 <FormGroup>
@@ -59,6 +62,7 @@ function SellerRegisteration(props) {
                         ref={register({ required: true, validate: value => value !== "" })}
                         className={"form-control"}
                         placeholder="Enter Sale Price"
+                        
                     />
                 </FormGroup>
                 <FormGroup>

@@ -9,6 +9,7 @@ import Card from "../../components/Card/Card"
 
 import Seller from '../../components/SellerRegisteration/SellerRegisteration'
 import Item from '../../components/ItemRegisterationForm/ItemRegisterationForm'
+import ItemView from "../../components/ItemView/itemView"
 import { getQuery } from '../../misc/helper'
 
 function Registeration(props) {
@@ -29,11 +30,15 @@ function Registeration(props) {
                     <Col sm={12}>
                         <Tab.Content animation>
                             <Tab.Pane eventKey="item">
-                             <Card
-                        content={
-                            <Item />
-                        }
-                    />
+                            
+                            <Row>
+                                <Col md={6} xs={12}>
+                               <Item /> 
+                    </Col>
+                    <Col md={6} xs={12}>
+                     <ItemView />
+                    </Col>
+                    </Row>
                             </Tab.Pane>
                             <Tab.Pane eventKey="dp">
                              <Card
